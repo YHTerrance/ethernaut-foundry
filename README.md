@@ -79,4 +79,6 @@ export $(cat .env | xargs)
 forge script ./script/Level27-GoodSamaritan.s.sol --tc GoodSamaritanScript --private-key $PKEY --broadcast --rpc-url $SEPOLIA_RPC_URL -vvvv
 # Level 28
 forge script ./script/Level28-GatekeeperThree.s.sol --tc GatekeeperThreeScript --private-key $PKEY --broadcast --rpc-url $SEPOLIA_RPC_URL -vvvv
+# Level 29
+forge script ./script/Level29-Switch.s.sol  --private-key $PKEY --broadcast --rpc-url $SEPOLIA_RPC_URL -vvvv
 ```
