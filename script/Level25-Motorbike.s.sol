@@ -3,6 +3,8 @@ pragma solidity ^0.8.13;
 
 import {Script, console2} from "forge-std/Script.sol";
 
+// forge script ./script/Level25-Motorbike.s.sol --private-key $PKEY --broadcast --rpc-url $RPC_URL -vvvv
+
 interface Engine {
     function initialize() external;
     function upgrader() external view returns (address upgrader_);
