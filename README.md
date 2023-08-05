@@ -71,3 +71,12 @@ $ cast --help
 ```shell
 export $(cat .env | xargs)
 ```
+
+### Past executions
+
+```shell
+# Level 27
+forge script ./script/Level27-GoodSamaritan.s.sol --tc GoodSamaritanScript --private-key $PKEY --broadcast --rpc-url $SEPOLIA_RPC_URL -vvvv
+# Level 28
+forge script ./script/Level28-GatekeeperThree.s.sol --tc GatekeeperThreeScript --private-key $PKEY --broadcast --rpc-url $SEPOLIA_RPC_URL -vvvv
+```
