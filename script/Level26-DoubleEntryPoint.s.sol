@@ -2,7 +2,6 @@
 pragma solidity ^0.8.13;
 
 import {Script, console2} from "forge-std/Script.sol";
-import { DetectionBot } from "../src/Level26-DoubleEntryPoint.sol";
 
 interface IDEP {
     function cryptoVault() external view returns (address);
@@ -20,6 +19,34 @@ interface IForta {
     function setDetectionBot(address detectionBotAddress) external;
     function notify(address user, bytes calldata msgData) external;
     function raiseAlert(address user) external;
+}
+
+interface IDetectionBot {
+    function handleTransaction(address user, bytes calldata msgData) external;
+
+    event handleTransactionEvent(address user, address origSender, bytes msgData);
+    event raiseAlertEvent(address user);
+}
+
+contract DetectionBot is IDetectionBot {
+
+    address cryptoVault;
+
+    constructor(address cryptoVault_) {
+        cryptoVault = cryptoVault_;
+    }
+
+    function handleTransaction(address user, bytes calldata msgData) external override {
+
+        // the first 4 bytes is thefunction signature (we should skip them)
+        (, , address origSender) = abi.decode(msgData[4:], (address, uint256, address));
+        emit handleTransactionEvent(user, origSender, msgData);
+
+        if (origSender == cryptoVault) {
+            IForta(msg.sender).raiseAlert(user);
+            emit raiseAlertEvent(user);
+        }
+    }
 }
 
 contract DEPScript is Script {
